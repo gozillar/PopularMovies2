@@ -11,6 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.example.relearn.popularmovies2.model.Movie;
+
 /**
  * Created by relearn on 11/05/2017.
  */
@@ -21,12 +24,48 @@ public class MovieActivity extends AppCompatActivity implements AppBarLayout.OnO
     private boolean mIsAvatarShown = true;
     private ImageView mMoviePoster;
     private int maxScrollSize;
+    String moviePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
+        setUpViews();
+
+        loadData();
+    }
+
+    public static void start(Context c) {
+        c.startActivity(new Intent(c, MovieActivity.class));
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+        if (maxScrollSize == 0)
+            maxScrollSize = appBarLayout.getTotalScrollRange();
+
+        int percentage = (Math.abs(i)) * 100 / maxScrollSize;
+
+        if (percentage >= PERCENTAGE_TO_ANIMATE_AVATAR && mIsAvatarShown) {
+            mIsAvatarShown = false;
+
+            mMoviePoster.animate()
+                    .scaleY(0).scaleX(0)
+                    .setDuration(200)
+                    .start();
+        }
+
+        if (percentage <= PERCENTAGE_TO_ANIMATE_AVATAR && !mIsAvatarShown) {
+            mIsAvatarShown = true;
+
+            mMoviePoster.animate()
+                    .scaleY(1).scaleX(1)
+                    .start();
+        }
+    }
+
+    void setUpViews() {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.materialup_tabs);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.materialup_viewpager);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.materialup_appbar);
@@ -69,57 +108,20 @@ public class MovieActivity extends AppCompatActivity implements AppBarLayout.OnO
         });
     }
 
-    public static void start(Context c) {
-        c.startActivity(new Intent(c, MovieActivity.class));
+    void loadData() {
+
+        Movie movie = getIntent().getParcelableExtra("movie");
+
+        moviePath = "http://image.tmdb.org/t/p/w342";
+
+        /*movieTitle.setText(movie.getOriginal_title());
+        overview.setText(movie.getOverview());
+        release_date.setText(movie.getRelease_date());
+
+        String vote = String.valueOf(movie.getVote_average());
+        user_voting.setText(vote);*/
+
+        Glide.with(this).load(moviePath + movie.getBackdrop_path()).into(mMoviePoster);
     }
-
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-        if (maxScrollSize == 0)
-            maxScrollSize = appBarLayout.getTotalScrollRange();
-
-        int percentage = (Math.abs(i)) * 100 / maxScrollSize;
-
-        if (percentage >= PERCENTAGE_TO_ANIMATE_AVATAR && mIsAvatarShown) {
-            mIsAvatarShown = false;
-
-            mMoviePoster.animate()
-                    .scaleY(0).scaleX(0)
-                    .setDuration(200)
-                    .start();
-        }
-
-        if (percentage <= PERCENTAGE_TO_ANIMATE_AVATAR && !mIsAvatarShown) {
-            mIsAvatarShown = true;
-
-            mMoviePoster.animate()
-                    .scaleY(1).scaleX(1)
-                    .start();
-        }
-    }
-
-    /*private static class TabsAdapter extends FragmentPagerAdapter {
-
-        private static final int TAB_COUNT = 3;
-
-        TabsAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-        }
-
-        @Override
-        public int getCount() {
-            return TAB_COUNT;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return FakePageFragment.newInstance();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "Tab " + String.valueOf(position);
-        }
-    }*/
 
 }

@@ -19,8 +19,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-
 /**
  * Created by relearn4 on 5/13/2017.
  */
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     void loadMovieData() {
 
-        String API_KEY = "ENTER API_KEY HERE";
+        String API_KEY = "e670cb047709fb74fb05ab7a751f3c08";
         ApiInterface apiInterface = apiClient.getService();
         Call<MovieList> movieListCall = apiInterface.getPopularMovies(API_KEY);
         movieListCall.enqueue(new Callback<MovieList>() {
@@ -81,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     void loadTopRatedData() {
 
-        String API_KEY = "ENTER API_KEY HERE";
+        String API_KEY = "e670cb047709fb74fb05ab7a751f3c08";
         ApiInterface apiInterface = apiClient.getService();
         Call<MovieList> movieListCall = apiInterface.getTopRatedMovies(API_KEY);
         movieListCall.enqueue(new Callback<MovieList>() {
