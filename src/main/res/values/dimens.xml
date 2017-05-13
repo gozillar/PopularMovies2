@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="twenty">20dp</dimen>
-    <dimen name="two_hundred">200dp</dimen>
-    <dimen name="two">2dp</dimen>
-    <dimen name="twenty_five">25dp</dimen>
-    <dimen name="five">5dp</dimen>
-    <dimen name="eight">8dp</dimen>
-    <dimen name="fifteen">15dp</dimen>
 
     <dimen name="fifty">50dp</dimen>
     <dimen name="sixty">60dp</dimen>

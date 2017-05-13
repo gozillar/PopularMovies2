@@ -5,21 +5,17 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by relearn on 14/04/2017.
- */
-
 public class ReviewList {
 
     @SerializedName("results")
     @Expose
-    private List<Movie> results = null;
+    private List<Review> results = null;
 
-    public List<Movie> getResults() {
+    public List<Review> getResults() {
         return results;
     }
 
-    public void setResults(List<Movie> results) {
+    public void setResults(List<Review> results) {
         this.results = results;
     }
 

@@ -21,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VideoFragment extends Fragment {
+public class TrailerFragment extends Fragment {
 
     private RecyclerView rRecyclerView;
     private ApiClient apiClient;
@@ -58,15 +58,13 @@ public class VideoFragment extends Fragment {
                     trailerAdapter = new TrailerAdapter(trailerList.getResults());
                     rRecyclerView.setAdapter(trailerAdapter);
                 } else {
-                    /*Toast.makeText(VideoFragment.this, "Request not Sucessful", Toast.LENGTH_SHORT).show();*/
+                    Toast.makeText(getContext(), R.string.failedRequest, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<TrailerList> call, Throwable t) {
-                /*Toast.makeText(VideoFragment.this,
-                        "Request failed. Check your internet connection",
-                        Toast.LENGTH_SHORT).show();*/
+                Toast.makeText(getContext(), R.string.failedInternetRequest,Toast.LENGTH_SHORT).show();
             }
         });
     }

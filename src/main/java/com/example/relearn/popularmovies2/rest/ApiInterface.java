@@ -1,6 +1,7 @@
 package com.example.relearn.popularmovies2.rest;
 
 import com.example.relearn.popularmovies2.model.MovieList;
+import com.example.relearn.popularmovies2.model.ReviewList;
 import com.example.relearn.popularmovies2.model.TrailerList;
 
 import retrofit2.Call;
@@ -22,7 +23,7 @@ public interface ApiInterface {
             @Query("api_key") String filters);
 
     @GET("/3/movie/{id}/reviews")
-    Call<MovieList> getReviews(
+    Call<ReviewList> getReviews(
             @Path("id") int id,
             @Query("api_key") String filters);
 

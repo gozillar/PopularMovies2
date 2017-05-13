@@ -8,61 +8,27 @@ import com.google.gson.annotations.SerializedName;
 
 public class Review implements Parcelable {
 
-    @SerializedName("backdrop_path")
+    @SerializedName("author")
     @Expose
-    private String backdrop_path;
-    @SerializedName("overview")
+    private String author;
+    @SerializedName("content")
     @Expose
-    private String overview;
-    @SerializedName("original_title")
-    @Expose
-    private String original_title;
-    @SerializedName("release_date")
-    @Expose
-    private String release_date;
+    private String content;
 
-    public String getRelease_date() {
-        return release_date;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public double getVote_average() {
-        return vote_average;
+    public String getContent() {
+        return content;
     }
 
-    public void setVote_average(double vote_average) {
-        this.vote_average = vote_average;
-    }
-
-    @SerializedName("vote_average")
-    @Expose
-    private double vote_average;
-
-    public String getBackdrop_path() {
-        return backdrop_path;
-    }
-
-    public void setBackdrop_path(String backdrop_path) {
-        this.backdrop_path = backdrop_path;
-    }
-
-    public String getOverview() {
-        return overview;
-    }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-
-    public String getOriginal_title() {
-        return original_title;
-    }
-
-    public void setOriginal_title(String original_title) {
-        this.original_title = original_title;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
@@ -72,19 +38,13 @@ public class Review implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(backdrop_path);
-        parcel.writeString(original_title);
-        parcel.writeString(overview);
-        parcel.writeString(release_date);
-        parcel.writeDouble(vote_average);
+        parcel.writeString(author);
+        parcel.writeString(content);
     }
 
     protected Review(Parcel in) {
-        backdrop_path = in.readString();
-        original_title = in.readString();
-        overview = in.readString();
-        release_date = in.readString();
-        vote_average = in.readDouble();
+        author = in.readString();
+        content = in.readString();
     }
 
     public static final Creator<Review> CREATOR = new Creator<Review>() {

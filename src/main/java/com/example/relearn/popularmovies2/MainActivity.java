@@ -59,14 +59,13 @@ public class MainActivity extends AppCompatActivity {
                     moviesAdapter = new MoviesAdapter(movieList.getResults());
                     rRecyclerView.setAdapter(moviesAdapter);
                 } else {
-                    Toast.makeText(MainActivity.this, "Request not Sucessful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.failedRequest, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<MovieList> call, Throwable t) {
-                Toast.makeText(MainActivity.this,
-                        "Request failed. Check your internet connection",
+                Toast.makeText(MainActivity.this, R.string.failedInternetRequest,
                         Toast.LENGTH_SHORT).show();
             }
         });
