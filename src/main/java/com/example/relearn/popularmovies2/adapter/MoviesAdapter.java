@@ -19,7 +19,6 @@ import com.example.relearn.popularmovies2.model.Movie;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
 
-    private static final String TAG = MoviesAdapter.class.getSimpleName();
     private List<Movie> movieList;
 
     public MoviesAdapter(List<Movie> movieList) {

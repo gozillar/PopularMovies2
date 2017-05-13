@@ -30,7 +30,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewsVie
         final Review currentReview = reviewList.get(position);
 
         holder.authorName.setText(currentReview.getAuthor());
-        holder.commentText.setText(currentReview.getContent());
+        holder.contentText.setText(currentReview.getContent());
     }
 
     @Override
@@ -40,12 +40,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewsVie
 
     class ReviewsViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView authorName, commentText;
+        private TextView authorName, contentText;
 
         public ReviewsViewHolder(View itemView) {
             super(itemView);
             authorName = (TextView) itemView.findViewById(R.id.author);
-            commentText = (TextView) itemView.findViewById(R.id.content);
+            contentText = (TextView) itemView.findViewById(R.id.content);
         }
 
     }
