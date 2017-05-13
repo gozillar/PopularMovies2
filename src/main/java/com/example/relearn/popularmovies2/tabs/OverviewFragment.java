@@ -2,21 +2,36 @@ package com.example.relearn.popularmovies2.tabs;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.relearn.popularmovies2.R;
-
-/**
- * Created by relearn on 11/05/2017.
- */
+import com.example.relearn.popularmovies2.model.Movie;
 
 public class OverviewFragment extends Fragment {
 
+    TextView overview, releasedate, rating;
+    private FragmentActivity fa;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_page,container, false);
+        View rootview = inflater.inflate(R.layout.overview_tab,container, false);
+        overview = (TextView) rootview.findViewById(R.id.overview);
+        releasedate = (TextView) rootview.findViewById(R.id.release_date);
+        rating = (TextView) rootview.findViewById(R.id.rating);
+
+        fa = super.getActivity();
+        Movie movie = fa.getIntent().getParcelableExtra("movie");
+
+        overview.setText(movie.getOverview());
+        releasedate.setText(movie.getRelease_date());
+        String vote = String.valueOf(movie.getVote_average());
+        rating.setText(vote);
+
+        return rootview;
     }
 
 }

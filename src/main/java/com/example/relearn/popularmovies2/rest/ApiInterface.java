@@ -1,6 +1,8 @@
 package com.example.relearn.popularmovies2.rest;
 
 import com.example.relearn.popularmovies2.model.MovieList;
+import com.example.relearn.popularmovies2.model.TrailerList;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -15,7 +17,7 @@ public interface ApiInterface {
     Call<MovieList> getTopRatedMovies(@Query("api_key") String filters);
 
     @GET("/3/movie/{id}/videos")
-    Call<MovieList> getVideos(
+    Call<TrailerList> getVideos(
             @Path("id") int id,
             @Query("api_key") String filters);
 

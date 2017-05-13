@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Movie implements Parcelable {
+public class Review implements Parcelable {
 
     @SerializedName("backdrop_path")
     @Expose
@@ -20,13 +20,6 @@ public class Movie implements Parcelable {
     @SerializedName("release_date")
     @Expose
     private String release_date;
-
-    @SerializedName("vote_average")
-    @Expose
-    private double vote_average;
-    @SerializedName("id")
-    @Expose
-    private int id;
 
     public String getRelease_date() {
         return release_date;
@@ -44,13 +37,9 @@ public class Movie implements Parcelable {
         this.vote_average = vote_average;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    @SerializedName("vote_average")
+    @Expose
+    private double vote_average;
 
     public String getBackdrop_path() {
         return backdrop_path;
@@ -88,26 +77,24 @@ public class Movie implements Parcelable {
         parcel.writeString(overview);
         parcel.writeString(release_date);
         parcel.writeDouble(vote_average);
-        parcel.writeInt(id);
     }
 
-    protected Movie(Parcel in) {
+    protected Review(Parcel in) {
         backdrop_path = in.readString();
         original_title = in.readString();
         overview = in.readString();
         release_date = in.readString();
         vote_average = in.readDouble();
-        id = in.readInt();
     }
 
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+    public static final Creator<Review> CREATOR = new Creator<Review>() {
         @Override
-        public Movie createFromParcel(Parcel parcel) {
-            return new Movie(parcel);
+        public Review createFromParcel(Parcel parcel) {
+            return new Review(parcel);
         }
 
-        public Movie[] newArray(int size) {
-            return new Movie[size];
+        public Review[] newArray(int size) {
+            return new Review[size];
         }
     };
 

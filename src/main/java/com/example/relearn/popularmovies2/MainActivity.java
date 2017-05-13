@@ -1,6 +1,5 @@
 package com.example.relearn.popularmovies2;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +17,6 @@ import com.example.relearn.popularmovies2.rest.ApiInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-/**
- * Created by relearn4 on 5/13/2017.
- */
 
 public class MainActivity extends AppCompatActivity {
 
