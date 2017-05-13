@@ -67,6 +67,7 @@
         android:src="@drawable/ic_comment_24dp"
         android:layout_gravity="bottom|right|end"
         android:layout_margin="16dp"
+        android:onClick="fave"
         app:elevation="8dp" />
 
 </android.support.design.widget.CoordinatorLayout>

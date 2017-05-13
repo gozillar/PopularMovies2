@@ -2,6 +2,8 @@ package com.example.relearn.popularmovies2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -10,13 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.relearn.popularmovies2.model.Movie;
-
-/**
- * Created by relearn on 11/05/2017.
- */
+import com.example.relearn.popularmovies2.sqlite.FavoriteMoviesContract;
 
 public class MovieActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
@@ -25,19 +25,59 @@ public class MovieActivity extends AppCompatActivity implements AppBarLayout.OnO
     private ImageView mMoviePoster;
     private int maxScrollSize;
     String moviePath;
+    private SQLiteDatabase db;
+    Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
-
+        movie = getIntent().getParcelableExtra("movie");
+        createDatabase();
         setUpViews();
+        loadImageIntoView();
 
-        loadData();
     }
 
-    public static void start(Context c) {
-        c.startActivity(new Intent(c, MovieActivity.class));
+    protected void createDatabase() {
+        final String SQL_CREATE_FAVORITES_TABLE = "CREATE TABLE " +
+                FavoriteMoviesContract.FavoriteMovies.TABLE_NAME + " (" +
+                FavoriteMoviesContract.FavoriteMovies.COLUMN_ID + " INTEGER PRIMARY KEY," +
+                FavoriteMoviesContract.FavoriteMovies.COLUMN_TITLE + " TEXT," +
+                FavoriteMoviesContract.FavoriteMovies.COLUMN_MOVIE_PATH + " TEXT," +
+                FavoriteMoviesContract.FavoriteMovies.COLUMN_OVERVIEW + " TEXT," +
+                FavoriteMoviesContract.FavoriteMovies.COLUMN_REL_DATE + " TEXT," +
+                FavoriteMoviesContract.FavoriteMovies.COLUMN_RATING + " TEXT)";
+
+        db = openOrCreateDatabase("FavoriteMoviesDB", Context.MODE_PRIVATE, null);
+        try {
+            db.execSQL(SQL_CREATE_FAVORITES_TABLE);
+        } catch(SQLiteException se) {
+            Toast.makeText(getApplicationContext(), se.toString(), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    protected void insertIntoDB() {
+        String title = movie.getOriginal_title();
+        String moviePath = movie.getBackdrop_path();
+        String overview = movie.getOverview();
+        String relDate = movie.getRelease_date();
+        double rating = movie.getVote_average();
+        int id = movie.getId();
+
+        try {
+            String query = "INSERT INTO favorites(movieId,movieTitle,moviePosterPath,movieOverview,movieReleaseDate,movieUserRating) VALUES('"
+                    + id + "', '" + title + "', '" + moviePath + "', '" + overview + "', '" + relDate + "', '" + rating + "');";
+            db.execSQL(query);
+            Toast.makeText(getApplicationContext(), "Saved to Favourites", Toast.LENGTH_SHORT).show();
+        } catch (SQLiteException e) {
+            Toast.makeText(getApplicationContext(), "Save failed", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void fave(View v) {
+        insertIntoDB();
     }
 
     @Override
@@ -82,7 +122,7 @@ public class MovieActivity extends AppCompatActivity implements AppBarLayout.OnO
         appBarLayout.addOnOffsetChangedListener(this);
         maxScrollSize = appBarLayout.getTotalScrollRange();
 
-        tabLayout.addTab(tabLayout.newTab().setText("Overiew"));
+        tabLayout.addTab(tabLayout.newTab().setText("Overview"));
         tabLayout.addTab(tabLayout.newTab().setText("Trailers"));
         tabLayout.addTab(tabLayout.newTab().setText("Reviews"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -108,19 +148,8 @@ public class MovieActivity extends AppCompatActivity implements AppBarLayout.OnO
         });
     }
 
-    void loadData() {
-
-        Movie movie = getIntent().getParcelableExtra("movie");
-
+    void loadImageIntoView() {
         moviePath = "http://image.tmdb.org/t/p/w342";
-
-        /*movieTitle.setText(movie.getOriginal_title());
-        overview.setText(movie.getOverview());
-        release_date.setText(movie.getRelease_date());
-
-        String vote = String.valueOf(movie.getVote_average());
-        user_voting.setText(vote);*/
-
         Glide.with(this).load(moviePath + movie.getBackdrop_path()).into(mMoviePoster);
     }
 
