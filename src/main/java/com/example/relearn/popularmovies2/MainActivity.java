@@ -1,6 +1,6 @@
 package com.example.relearn.popularmovies2;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,10 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.relearn.popularmovies2.adapter.FavMoviesAdapter;
 import com.example.relearn.popularmovies2.adapter.MoviesAdapter;
+import com.example.relearn.popularmovies2.model.FavMovie;
 import com.example.relearn.popularmovies2.model.MovieList;
 import com.example.relearn.popularmovies2.rest.ApiClient;
 import com.example.relearn.popularmovies2.rest.ApiInterface;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,15 +27,18 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rRecyclerView;
     private ApiClient apiClient;
     private MoviesAdapter moviesAdapter;
-    private SQLiteDatabase mDb;
+    //private SQLiteDatabase mDb;
+    FavMoviesAdapter favMoviesAdapter;
+    ArrayList<FavMovie> favs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //FavoritesDbHelper dbHelper = new FavoritesDbHelper(this);
-        //mDb = dbHelper.getWritableDatabase();
+
+        //FavoritesDBHelper dbHelper = new FavoritesDBHelper(this);
+        //mDb = dbHelper.getReadableDatabase();
 
         createViews();
         apiClient = new ApiClient();
@@ -98,10 +105,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*void loadFavoriteData() {
-        Cursor cursor = getAllFavorites();
-        moviesAdapter = new MoviesAdapter(cursor);
-    }*/
+    void loadFavoriteData() {
+        /*favs.clear();
+        DBAdapter db = new DBAdapter(this);
+        db.openDB();
+        Cursor cursor = db.getAllFavorites();
+
+        while (cursor.moveToNext()) {
+            String movieName = cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMovies.COLUMN_TITLE));
+            String moviePath = cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMovies.COLUMN_MOVIE_PATH));
+            int id = cursor.getInt(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMovies.COLUMN_TITLE));
+            String movieDate = cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMovies.COLUMN_REL_DATE));
+            String moviePlot = cursor.getString(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMovies.COLUMN_OVERVIEW));
+            double movieRate = cursor.getDouble(cursor.getColumnIndex(FavoriteMoviesContract.FavoriteMovies.COLUMN_RATING));
+
+            FavMovie favMovie = new FavMovie(movieName, moviePath, id, movieDate, moviePlot, movieRate);
+            favs.add(favMovie);
+        }
+
+        if(!(favs.size()<1)) {
+            favMoviesAdapter = new FavMoviesAdapter(this, favs, cursor);
+            rRecyclerView.setAdapter(favMoviesAdapter);
+        }
+        //favMoviesAdapter = new FavMoviesAdapter(this, cursor);
+        db.closeDB();*/
+        Intent intent = new Intent(this, FavMovieActivity.class);
+        //intent.putExtra("movie", currentMovie);
+        startActivity(intent);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -121,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 loadTopRatedData();
                 return true;
             case R.id.sortF:
-                //
+                loadFavoriteData();
                 return true;
         }
         return super.onOptionsItemSelected(item);

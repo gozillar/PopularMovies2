@@ -49,7 +49,7 @@
             android:layout_height="?attr/actionBarSize"
             app:tabSelectedTextColor="?android:attr/textColorPrimaryInverse"
             app:tabIndicatorColor="?android:attr/textColorPrimaryInverse"
-            app:tabIndicatorHeight="4dp"
+            app:tabIndicatorHeight="3dp"
             />
 
     </android.support.design.widget.AppBarLayout>
@@ -64,9 +64,10 @@
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_comment_24dp"
         android:layout_gravity="bottom|right|end"
         android:layout_margin="16dp"
+        android:src="@drawable/favorite_selector"
+        app:fabSize="normal"
         android:onClick="fave"
         app:elevation="8dp" />
 

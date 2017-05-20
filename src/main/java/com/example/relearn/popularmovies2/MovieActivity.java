@@ -1,9 +1,5 @@
 package com.example.relearn.popularmovies2;
 
-import android.content.Context;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -16,7 +12,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.relearn.popularmovies2.model.Movie;
-import com.example.relearn.popularmovies2.sqlite.FavoriteMoviesContract;
+import com.example.relearn.popularmovies2.sqlite.FavoritesDBHelper;
+
+import android.database.SQLException;
 
 public class MovieActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
@@ -24,8 +22,9 @@ public class MovieActivity extends AppCompatActivity implements AppBarLayout.OnO
     private boolean mIsAvatarShown = true;
     private ImageView mMoviePoster;
     private int maxScrollSize;
+    FavoritesDBHelper helper;
     String moviePath;
-    private SQLiteDatabase db;
+
     Movie movie;
 
     @Override
@@ -33,32 +32,14 @@ public class MovieActivity extends AppCompatActivity implements AppBarLayout.OnO
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
         movie = getIntent().getParcelableExtra("movie");
-        createDatabase();
+
         setUpViews();
         loadImageIntoView();
-
     }
 
-    protected void createDatabase() {
-        final String SQL_CREATE_FAVORITES_TABLE = "CREATE TABLE " +
-                FavoriteMoviesContract.FavoriteMovies.TABLE_NAME + " (" +
-                FavoriteMoviesContract.FavoriteMovies.COLUMN_ID + " INTEGER PRIMARY KEY," +
-                FavoriteMoviesContract.FavoriteMovies.COLUMN_TITLE + " TEXT," +
-                FavoriteMoviesContract.FavoriteMovies.COLUMN_MOVIE_PATH + " TEXT," +
-                FavoriteMoviesContract.FavoriteMovies.COLUMN_OVERVIEW + " TEXT," +
-                FavoriteMoviesContract.FavoriteMovies.COLUMN_REL_DATE + " TEXT," +
-                FavoriteMoviesContract.FavoriteMovies.COLUMN_RATING + " TEXT)";
+    public void fave(View v) {
+        helper = new FavoritesDBHelper(this);
 
-        db = openOrCreateDatabase("FavoriteMoviesDB", Context.MODE_PRIVATE, null);
-        try {
-            db.execSQL(SQL_CREATE_FAVORITES_TABLE);
-        } catch(SQLiteException se) {
-            Toast.makeText(getApplicationContext(), se.toString(), Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-    protected void insertIntoDB() {
         String title = movie.getOriginal_title();
         String moviePath = movie.getBackdrop_path();
         String overview = movie.getOverview();
@@ -67,17 +48,12 @@ public class MovieActivity extends AppCompatActivity implements AppBarLayout.OnO
         int id = movie.getId();
 
         try {
-            String query = "INSERT INTO favorites(movieId,movieTitle,moviePosterPath,movieOverview,movieReleaseDate,movieUserRating) VALUES('"
-                    + id + "', '" + title + "', '" + moviePath + "', '" + overview + "', '" + relDate + "', '" + rating + "');";
-            db.execSQL(query);
+            helper.insertIntoDB(id, title, moviePath, overview, relDate, rating);
             Toast.makeText(getApplicationContext(), "Saved to Favourites", Toast.LENGTH_SHORT).show();
-        } catch (SQLiteException e) {
+        } catch (SQLException se) {
             Toast.makeText(getApplicationContext(), "Save failed", Toast.LENGTH_LONG).show();
         }
-    }
 
-    public void fave(View v) {
-        insertIntoDB();
     }
 
     @Override
